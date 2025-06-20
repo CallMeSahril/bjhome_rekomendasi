@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Data Kategori{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold"><i class="fas fa-tags mr-2"></i>Data Kategori</h1>
+    <a href="{{ url_for('kategori_bp.tambah_kategori') }}" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <i class="fas fa-plus-circle mr-2"></i>Tambah Kategori
+    </a>
+  </div>
+
+  <div class="bg-white shadow rounded overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-100 text-xs font-medium text-gray-700 uppercase">
+        <tr>
+          <th class="px-4 py-3">Nama Kategori</th>
+          <th class="px-4 py-3">Fungsi Produk</th>
+          <th class="px-4 py-3 text-center">Aksi</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200 bg-white">
+        {% for k in data.itertuples() %}
+        <tr>
+          <td class="px-4 py-2">{{ k.nama_kategori }}</td>
+          <td class="px-4 py-2">{{ k.fungsi_produk }}</td>
+          <td class="px-4 py-2 flex justify-center gap-3">
+            <a href="{{ url_for('kategori_bp.edit_kategori', id=k.id) }}" class="text-yellow-500 hover:text-yellow-700">
+              <i class="fas fa-edit"></i>
+            </a>
+            <form method="POST" action="{{ url_for('kategori_bp.hapus_kategori', id=k.id) }}">
+              <button onclick="return confirm('Hapus kategori ini?')" class="text-red-500 hover:text-red-700">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

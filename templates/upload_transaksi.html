@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('transaksi_bp.download_template') }}" class="text-blue-600 hover:underline">
+        📄 Download Template Excel
+    </a>
+</div>
+
+<div class="max-w-md mx-auto mt-10 p-4 bg-white shadow rounded">
+    <h2 class="text-xl font-bold mb-4">Upload Transaksi</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".xlsx" required class="mb-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+            Upload & Proses
+        </button>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="mt-4">
+                    {% for message in messages %}
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </form>
+</div>
+
+{% if rekomendasi %}
+<div class="mt-8">
+    <h3 class="text-lg font-semibold mb-2">Hasil Rekomendasi Produk</h3>
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 rounded shadow">
+            <thead>
+                <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700 uppercase">
+                    <th class="px-4 py-2 border">#</th>
+                    <th class="px-4 py-2 border">Nama Produk</th>
+                    <th class="px-4 py-2 border">Kategori</th>
+                    <th class="px-4 py-2 border">Merek</th>
+                    <th class="px-4 py-2 border">Bahan</th>
+                    <th class="px-4 py-2 border">Ukuran</th>
+                    <th class="px-4 py-2 border">Warna</th>
+                    <th class="px-4 py-2 border">Skor Kecocokan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in rekomendasi %}
+                <tr class="hover:bg-gray-50 text-sm">
+                    <td class="px-4 py-2 border">{{ loop.index }}</td>
+                    <td class="px-4 py-2 border">{{ r.nama_produk }}</td>
+                    <td class="px-4 py-2 border">{{ r.kategori }}</td>
+                    <td class="px-4 py-2 border">{{ r.merek }}</td>
+                    <td class="px-4 py-2 border">{{ r.bahan }}</td>
+                    <td class="px-4 py-2 border">{{ r.ukuran }}</td>
+                    <td class="px-4 py-2 border">{{ r.warna }}</td>
+                    <td class="px-4 py-2 border">{{ r.skor }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

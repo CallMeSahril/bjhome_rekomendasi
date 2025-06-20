@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+<div class="max-w-xl mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <h2 class="text-2xl font-bold mb-4"><i class="fas fa-box-open mr-2"></i>{{ title }}</h2>
+
+  <form method="POST" class="space-y-4">
+    <div>
+      <label class="block text-gray-700">Nama Produk</label>
+      <input name="nama_produk" value="{{ produk.nama_produk or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Kategori</label>
+      <input name="kategori" value="{{ produk.kategori or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Merek</label>
+      <input name="merek" value="{{ produk.merek or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Bahan</label>
+      <input name="bahan" value="{{ produk.bahan or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Ukuran</label>
+      <input name="ukuran" value="{{ produk.ukuran or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Warna</label>
+      <input name="warna" value="{{ produk.warna or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div class="flex justify-between mt-6">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+        <i class="fas fa-save mr-2"></i>Simpan
+      </button>
+      <a href="{{ url_for('produk_bp.list_produk') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
+        <i class="fas fa-arrow-left mr-2"></i>Kembali
+      </a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

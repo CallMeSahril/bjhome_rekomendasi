@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Hasil Rekomendasi{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">📊 Hasil Rekomendasi - {{ nama }}</h2>
+
+<div class="mb-4 space-x-2">
+  <a href="/{{ pdf_path }}" target="_blank" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    <i class="fas fa-file-pdf mr-2"></i>Download PDF
+  </a>
+  <a href="{{ wa_link }}" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+    <i class="fab fa-whatsapp mr-2"></i>Share via WhatsApp
+  </a>
+</div>
+
+<h3 class="font-semibold text-lg mt-6 mb-2">🔵 Cross-Selling</h3>
+<ul class="list-disc list-inside">
+  {% for item in cross %}
+  <li>{{ item.produk }} → {{ item.nama_produk }} (skor: {{ item.skor }})</li>
+  {% endfor %}
+</ul>
+
+<h3 class="font-semibold text-lg mt-6 mb-2">🔴 Up-Selling</h3>
+<ul class="list-disc list-inside">
+  {% for item in up %}
+  <li>{{ item.produk }} → {{ item.nama_produk }} (skor: {{ item.skor }})</li>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,20 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{% block title %}BJ Home Panel{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body class="flex min-h-screen bg-gray-100">
+
+  {% include 'sidebar.html' %}
+
+  <!-- Content -->
+  <div class="flex-1 p-4">
+    {% block content %}{% endblock %}
+  </div>
+
+</body>
+</html>

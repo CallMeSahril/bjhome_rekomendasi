@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Form Kategori{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+  <h2 class="text-xl font-bold mb-4"><i class="fas fa-tag mr-2"></i>{{ kategori.id and 'Edit' or 'Tambah' }} Kategori</h2>
+
+  <form method="POST" class="space-y-4">
+    <div>
+      <label class="block text-gray-700">Nama Kategori</label>
+      <input name="nama_kategori" value="{{ kategori.nama_kategori or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div>
+      <label class="block text-gray-700">Fungsi Produk</label>
+      <input name="fungsi_produk" value="{{ kategori.fungsi_produk or '' }}" required class="w-full border rounded px-3 py-2">
+    </div>
+    <div class="flex justify-between mt-6">
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+        <i class="fas fa-save mr-2"></i>Simpan
+      </button>
+      <a href="{{ url_for('kategori_bp.list_kategori') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
+        <i class="fas fa-arrow-left mr-2"></i>Kembali
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

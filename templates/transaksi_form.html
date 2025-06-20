@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Transaksi Baru</h1>
+<form method="POST" class="space-y-4">
+  <div>
+    <label>Nama Pelanggan</label>
+    <input type="text" name="nama_pelanggan" required class="w-full border rounded px-3 py-2">
+  </div>
+  <div>
+    <label>Pilih Produk Dibeli</label>
+    <select name="produk[]" multiple class="w-full border rounded px-3 py-2 h-40">
+      {% for p in produk_list %}
+      <option value="{{ p }}">{{ p }}</option>
+      {% endfor %}
+    </select>
+    <small class="text-gray-500">Tekan Ctrl/Cmd untuk memilih lebih dari satu produk</small>
+  </div>
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+    <i class="fas fa-save"></i> Simpan Transaksi & Proses Rekomendasi
+  </button>
+</form>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Riwayat Rekomendasi{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4"><i class="fas fa-history mr-2"></i>Riwayat Rekomendasi Produk</h1>
+
+<table class="min-w-full bg-white shadow rounded">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="px-4 py-2">Pelanggan</th>
+      <th class="px-4 py-2">Produk Asal</th>
+      <th class="px-4 py-2">Rekomendasi</th>
+      <th class="px-4 py-2">Jenis</th>
+      <th class="px-4 py-2">Skor</th>
+      <th class="px-4 py-2">Tanggal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in data.itertuples() %}
+    <tr>
+      <td class="px-4 py-2">{{ r.nama_pelanggan }}</td>
+      <td class="px-4 py-2">{{ r.produk_asal }}</td>
+      <td class="px-4 py-2">{{ r.produk_rekomendasi }}</td>
+      <td class="px-4 py-2">{{ r.jenis }}</td>
+      <td class="px-4 py-2">{{ '%.2f'|format(r.skor) }}</td>
+      <td class="px-4 py-2">{{ r.tanggal }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

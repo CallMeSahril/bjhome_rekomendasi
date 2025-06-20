@@ -1,0 +1,41 @@
+<!-- Sidebar -->
+<div class="w-64 bg-white border-r hidden md:block">
+  <div class="p-4 text-xl font-bold border-b">
+    <i class="fas fa-store-alt mr-2"></i>BJ Home
+  </div>
+  <ul class="space-y-2 p-4 text-gray-700">
+    <li>
+      <a href="/" class="block p-2 hover:bg-gray-200 rounded">
+        <i class="fas fa-home mr-2"></i>Dashboard
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('produk_bp.list_produk') }}" class="block p-2 hover:bg-gray-200 rounded">
+        <i class="fas fa-box mr-2"></i>Data Produk
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('rekomendasi_bp.rekomendasi') }}" class="block p-2 hover:bg-gray-200 rounded">
+        <i class="fas fa-lightbulb mr-2"></i>Rekomendasi
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('kategori_bp.list_kategori') }}" class="block p-2 hover:bg-gray-200 rounded">
+        <i class="fas fa-tags mr-2"></i>Data Kategori
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('riwayat_bp.list_riwayat') }}" class="block p-2 hover:bg-gray-200 rounded">
+        <i class="fas fa-history mr-2"></i>Riwayat Rekomendasi
+      </a>
+    </li>
+       <li>
+         <a href="{{ url_for('transaksi_bp.upload_transaksi') }}" class="block p-2 hover:bg-gray-200 rounded">
+  Upload Transaksi
+</a>
+    </li>
+    
+
+
+  </ul>
+</div>
