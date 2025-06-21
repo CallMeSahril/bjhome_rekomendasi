@@ -27,11 +27,12 @@ def upload_transaksi():
 
                 # Proses file Excel
                 print("🚀 Memproses file transaksi...")
-                rekomendasi = proses_transaksi_excel(path)
+                rekomendasi, produk_dibeli = proses_transaksi_excel(path)
+
                 print("✅ Proses selesai. Jumlah rekomendasi:", len(rekomendasi))
                 print("🔍 Rekomendasi:", rekomendasi)
                 flash("Data transaksi berhasil diproses dan rekomendasi disimpan.")
-                return render_template("upload_transaksi.html", rekomendasi=rekomendasi)
+                return render_template("upload_transaksi.html", rekomendasi=rekomendasi, pembelian=produk_dibeli)
 
             else:
                 print("⚠️ Format file salah atau tidak ada file")
@@ -45,39 +46,39 @@ def upload_transaksi():
 
     # GET method
     print("📄 Halaman upload transaksi dibuka (GET)")
-    return render_template("upload_transaksi.html")
+    return render_template("upload_transaksi.html", rekomendasi=None, pembelian=None)
+
 
 
 @transaksi_bp.route("/transaksi/template")
 def download_template():
 
     df = pd.DataFrame([
-    {
-        "nama_pelanggan": "Budi Santoso",
-        "nama_produk": "Cat Avitex Interior 10L",
-        "kategori": "Cat",
-        "merek": "Avitex",
-        "bahan": "Akrilik",
-        "ukuran": "10L",
-        "warna": "Putih",
-        "tanggal_transaksi": "2025-06-20",
-        "jumlah": 2
-    },
-    {
-        "nama_pelanggan": "Budi Santoso",
-        "nama_produk": "Semen Tiga Roda 40Kg",
-        "kategori": "Semen",
-        "merek": "Tiga Roda",
-        "bahan": "Semen",
-        "ukuran": "40Kg",
-        "warna": "Abu",
-        "tanggal_transaksi": "2025-06-20",
-        "jumlah": 5
-    },
-   
-  
-    ])
+        {
+            "nama_pelanggan": "Budi Santoso",
+            "nama_produk": "Cat Avitex Interior 10L",
+            "kategori": "Cat",
+            "merek": "Avitex",
+            "bahan": "Akrilik",
+            "ukuran": "10L",
+            "warna": "Putih",
+            "tanggal_transaksi": "2025-06-20",
+            "jumlah": 2
+        },
+        {
+            "nama_pelanggan": "Budi Santoso",
+            "nama_produk": "Semen Tiga Roda 40Kg",
+            "kategori": "Semen",
+            "merek": "Tiga Roda",
+            "bahan": "Semen",
+            "ukuran": "40Kg",
+            "warna": "Abu",
+            "tanggal_transaksi": "2025-06-20",
+            "jumlah": 5
+        },
 
+
+    ])
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine='xlsxwriter') as writer:

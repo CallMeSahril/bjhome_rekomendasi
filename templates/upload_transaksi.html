@@ -1,67 +1,169 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="mb-4">
-    <a href="{{ url_for('transaksi_bp.download_template') }}" class="text-blue-600 hover:underline">
-        📄 Download Template Excel
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+    <h3 class="text-2xl font-semibold text-gray-800 flex items-center">
+      <i class="fas fa-upload text-blue-600 mr-2"></i> Upload Transaksi
+    </h3>
+    <a href="{{ url_for('transaksi_bp.download_template') }}" class="text-sm text-blue-600 hover:underline">
+      <i class="fas fa-file-excel mr-1"></i> Download Template Excel
     </a>
-</div>
+  </div>
 
-<div class="max-w-md mx-auto mt-10 p-4 bg-white shadow rounded">
-    <h2 class="text-xl font-bold mb-4">Upload Transaksi</h2>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".xlsx" required class="mb-4">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-            Upload & Proses
-        </button>
+  <!-- Upload Form -->
+  <div class="bg-white rounded shadow p-6 mb-8">
+    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih File Excel</label>
+        <input type="file" name="file" accept=".xlsx" required class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+      <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded shadow">
+        <i class="fas fa-paper-plane mr-1"></i> Upload & Proses
+      </button>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="mt-4">
-                    {% for message in messages %}
-                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <div class="bg-green-100 text-green-800 px-4 py-2 rounded border border-green-300 mt-4">
+            <i class="fas fa-check-circle mr-1"></i> {{ messages[0] }}
+          </div>
+        {% endif %}
+      {% endwith %}
     </form>
-</div>
+  </div>
 
-{% if rekomendasi %}
-<div class="mt-8">
-    <h3 class="text-lg font-semibold mb-2">Hasil Rekomendasi Produk</h3>
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-300 rounded shadow">
-            <thead>
-                <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700 uppercase">
-                    <th class="px-4 py-2 border">#</th>
-                    <th class="px-4 py-2 border">Nama Produk</th>
-                    <th class="px-4 py-2 border">Kategori</th>
-                    <th class="px-4 py-2 border">Merek</th>
-                    <th class="px-4 py-2 border">Bahan</th>
-                    <th class="px-4 py-2 border">Ukuran</th>
-                    <th class="px-4 py-2 border">Warna</th>
-                    <th class="px-4 py-2 border">Skor Kecocokan</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for r in rekomendasi %}
-                <tr class="hover:bg-gray-50 text-sm">
-                    <td class="px-4 py-2 border">{{ loop.index }}</td>
-                    <td class="px-4 py-2 border">{{ r.nama_produk }}</td>
-                    <td class="px-4 py-2 border">{{ r.kategori }}</td>
-                    <td class="px-4 py-2 border">{{ r.merek }}</td>
-                    <td class="px-4 py-2 border">{{ r.bahan }}</td>
-                    <td class="px-4 py-2 border">{{ r.ukuran }}</td>
-                    <td class="px-4 py-2 border">{{ r.warna }}</td>
-                    <td class="px-4 py-2 border">{{ r.skor }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  {% if rekomendasi %}
+  <style>
+    @media print {
+      .print\:hidden {
+        display: none !important;
+      }
+    }
+  </style>
+
+  <!-- Action Buttons -->
+  <div class="flex flex-col sm:flex-row justify-end gap-3 mb-6 print:hidden">
+    <button onclick="window.print()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow text-sm">
+      🖨️ Cetak
+    </button>
+    <a id="waShareBtn" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow text-sm">
+      📤 Share via WhatsApp
+    </a>
+  </div>
+
+  <!-- Produk Dibeli -->
+  <h4 class="text-lg font-semibold mb-3">🛒 Produk yang Dibeli</h4>
+  <div class="overflow-x-auto mb-8">
+    <table class="min-w-full bg-white border text-sm text-left">
+      <thead class="bg-gray-100 text-gray-700 uppercase">
+        <tr>
+          <th class="border px-4 py-2">#</th>
+          <th class="border px-4 py-2">Nama Produk</th>
+          <th class="border px-4 py-2">Kategori</th>
+          <th class="border px-4 py-2">Merek</th>
+          <th class="border px-4 py-2">Bahan</th>
+          <th class="border px-4 py-2">Ukuran</th>
+          <th class="border px-4 py-2">Warna</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pembelian %}
+        <tr class="hover:bg-gray-50">
+          <td class="border px-4 py-2">{{ loop.index }}</td>
+          <td class="border px-4 py-2">{{ p.nama_produk }}</td>
+          <td class="border px-4 py-2">{{ p.kategori }}</td>
+          <td class="border px-4 py-2">{{ p.merek }}</td>
+          <td class="border px-4 py-2">{{ p.bahan }}</td>
+          <td class="border px-4 py-2">{{ p.ukuran }}</td>
+          <td class="border px-4 py-2">{{ p.warna }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Rekomendasi Up-Selling -->
+  <h4 class="text-lg font-semibold mb-3">📈 Rekomendasi Produk - Up-Selling</h4>
+  <div class="overflow-x-auto mb-8">
+    <table class="min-w-full bg-white border text-sm text-left">
+      <thead class="bg-gray-100 text-gray-700 uppercase">
+        <tr>
+          <th class="border px-4 py-2">#</th>
+          <th class="border px-4 py-2">Nama Produk</th>
+          <th class="border px-4 py-2">Kategori</th>
+          <th class="border px-4 py-2">Merek</th>
+          <th class="border px-4 py-2">Bahan</th>
+          <th class="border px-4 py-2">Ukuran</th>
+          <th class="border px-4 py-2">Warna</th>
+          <th class="border px-4 py-2 text-right">Skor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rekomendasi if r.jenis == 'up' %}
+        <tr class="hover:bg-gray-50">
+          <td class="border px-4 py-2">{{ loop.index }}</td>
+          <td class="border px-4 py-2">{{ r.nama_produk }}</td>
+          <td class="border px-4 py-2">{{ r.kategori }}</td>
+          <td class="border px-4 py-2">{{ r.merek }}</td>
+          <td class="border px-4 py-2">{{ r.bahan }}</td>
+          <td class="border px-4 py-2">{{ r.ukuran }}</td>
+          <td class="border px-4 py-2">{{ r.warna }}</td>
+          <td class="border px-4 py-2 text-right">{{ r.skor }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Rekomendasi Cross-Selling -->
+  <h4 class="text-lg font-semibold mb-3">🔀 Rekomendasi Produk - Cross-Selling</h4>
+  <div class="overflow-x-auto mb-8">
+    <table class="min-w-full bg-white border text-sm text-left">
+      <thead class="bg-gray-100 text-gray-700 uppercase">
+        <tr>
+          <th class="border px-4 py-2">#</th>
+          <th class="border px-4 py-2">Nama Produk</th>
+          <th class="border px-4 py-2">Kategori</th>
+          <th class="border px-4 py-2">Merek</th>
+          <th class="border px-4 py-2">Bahan</th>
+          <th class="border px-4 py-2">Ukuran</th>
+          <th class="border px-4 py-2">Warna</th>
+          <th class="border px-4 py-2 text-right">Skor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rekomendasi if r.jenis == 'cross' %}
+        <tr class="hover:bg-gray-50">
+          <td class="border px-4 py-2">{{ loop.index }}</td>
+          <td class="border px-4 py-2">{{ r.nama_produk }}</td>
+          <td class="border px-4 py-2">{{ r.kategori }}</td>
+          <td class="border px-4 py-2">{{ r.merek }}</td>
+          <td class="border px-4 py-2">{{ r.bahan }}</td>
+          <td class="border px-4 py-2">{{ r.ukuran }}</td>
+          <td class="border px-4 py-2">{{ r.warna }}</td>
+          <td class="border px-4 py-2 text-right">{{ r.skor }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const waBtn = document.getElementById("waShareBtn");
+      const rows = document.querySelectorAll("table tbody tr");
+      let text = "*📦 Hasil Rekomendasi Produk BJ Home:*\n\n";
+      rows.forEach((row, i) => {
+        const cols = row.querySelectorAll("td");
+        const nama = cols[1]?.innerText;
+        const kategori = cols[2]?.innerText;
+        const skor = cols[7]?.innerText || '-';
+        text += `${i + 1}. ${nama} (${kategori}) - Skor: ${skor}\n`;
+      });
+      waBtn.href = "https://wa.me/?text=" + encodeURIComponent(text);
+    });
+  </script>
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}

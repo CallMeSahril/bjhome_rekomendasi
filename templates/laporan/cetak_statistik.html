@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto mt-4 px-4">
+    <h2 class="text-xl font-bold mb-4">📊 Statistik Top Rekomendasi</h2>
+    <table class="table-auto w-full border border-gray-300">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border px-4 py-2">No</th>
+                <th class="border px-4 py-2">Nama Produk</th>
+                <th class="border px-4 py-2">Total Direkomendasikan</th>
+                <th class="border px-4 py-2">Tipe</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in statistik %}
+            <tr>
+                <td class="border px-4 py-2">{{ loop.index }}</td>
+                <td class="border px-4 py-2">{{ s.nama_produk }}</td>
+                <td class="border px-4 py-2">{{ s.total }}</td>
+                <td class="border px-4 py-2">{{ s.tipe }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

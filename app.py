@@ -6,7 +6,7 @@ from routes.produk_route import produk_bp
 from routes.kategori_routes import kategori_bp
 from routes.riwayat_routes import riwayat_bp
 from routes.transaksi_routes import transaksi_bp
-
+from routes.laporan_routes import laporan_bp 
 
 app = Flask(__name__)
 app.secret_key = "bjhome-secret-2025" 
@@ -16,6 +16,7 @@ app.register_blueprint(produk_bp)
 app.register_blueprint(kategori_bp)
 app.register_blueprint(riwayat_bp)
 app.register_blueprint(transaksi_bp)
+app.register_blueprint(laporan_bp)
 
 if __name__ == "__main__":
     app.run(debug=True)

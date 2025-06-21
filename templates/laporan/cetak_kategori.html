@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto mt-4 px-4">
+    <h2 class="text-xl font-bold mb-4">🖨️ Laporan Data Kategori</h2>
+    <table class="table-auto w-full border border-gray-300">
+        <thead class="bg-gray-100">
+            <tr>
+                <th class="border px-4 py-2">No</th>
+                <th class="border px-4 py-2">Nama Kategori</th>
+                <th class="border px-4 py-2">Deskripsi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for k in kategori %}
+            <tr>
+                <td class="border px-4 py-2">{{ loop.index }}</td>
+                <td class="border px-4 py-2">{{ k.nama_kategori }}</td>
+                <td class="border px-4 py-2">{{ k.deskripsi }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

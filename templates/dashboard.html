@@ -1,6 +1,131 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
-  <p class="text-gray-600 mb-2">Selamat datang di Sistem Rekomendasi Produk BJ Home.</p>
-  <p>Gunakan menu di sebelah kiri untuk mengakses fitur-fitur seperti rekomendasi produk, manajemen data, dan laporan.</p>
+<div class="container mt-4">
+    <h4><i class="fas fa-chart-line me-2"></i>Dashboard Ringkasan</h4>
+
+    <div class="row g-4 my-3">
+        <!-- Total Produk -->
+        <div class="col-md-3">
+            <div class="card border-start border-primary border-4 shadow">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Produk</h6>
+                        <h4 class="fw-bold text-primary">{{ total_produk }}</h4>
+                    </div>
+                    <i class="fas fa-box fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Kategori -->
+        <div class="col-md-3">
+            <div class="card border-start border-success border-4 shadow">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Kategori</h6>
+                        <h4 class="fw-bold text-success">{{ total_kategori }}</h4>
+                    </div>
+                    <i class="fas fa-tags fa-2x text-success"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Transaksi -->
+        <div class="col-md-3">
+            <div class="card border-start border-info border-4 shadow">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Transaksi</h6>
+                        <h4 class="fw-bold text-info">{{ total_transaksi }}</h4>
+                    </div>
+                    <i class="fas fa-upload fa-2x text-info"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Rekomendasi -->
+        <div class="col-md-3">
+            <div class="card border-start border-warning border-4 shadow">
+                <div class="card-body d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="text-muted mb-1">Total Rekomendasi</h6>
+                        <h4 class="fw-bold text-warning">{{ total_rekomendasi }}</h4>
+                    </div>
+                    <i class="fas fa-lightbulb fa-2x text-warning"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row mt-4">
+    <!-- TOP 5 Up-Selling -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white fw-bold">
+                <i class="fas fa-level-up-alt me-1"></i> Top 5 Produk Up-Selling
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for p in top_upselling %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ p[0] }}
+                    <span class="badge bg-primary rounded-pill">{{ p[1] }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- TOP 5 Cross-Selling -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark fw-bold">
+                <i class="fas fa-random me-1"></i> Top 5 Produk Cross-Selling
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for p in top_crosselling %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ p[0] }}
+                    <span class="badge bg-warning text-dark rounded-pill">{{ p[1] }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <!-- Grafik Pie Chart -->
+    <div class="card mt-4 shadow-sm">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">Statistik Jenis Rekomendasi</h6>
+            <canvas id="rekomendasiChart" height="120"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('rekomendasiChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Up-Selling', 'Cross-Selling'],
+            datasets: [{
+                label: 'Jumlah',
+                data: [{{ total_up }}, {{ total_cross }}],
+                backgroundColor: ['#0d6efd', '#ffc107'], // Biru & Kuning
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

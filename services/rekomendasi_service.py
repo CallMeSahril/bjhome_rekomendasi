@@ -132,8 +132,10 @@ def proses_transaksi_excel(file_path):
                     "bahan": p2["bahan"],
                     "ukuran": p2["ukuran"],
                     "warna": p2["warna"],
-                    "skor": round(skor, 2)
+                    "skor": round(skor, 2),
+                    "jenis": jenis  # ✅ penting agar bisa dipisahkan di HTML
                 })
+
 
     for row in hasil:
         try:
@@ -150,4 +152,22 @@ def proses_transaksi_excel(file_path):
 
     print(f"✅ Proses selesai. Jumlah rekomendasi: {len(hasil)}")
     print("🔍 Rekomendasi:", hasil_display)
-    return hasil_display
+    produk_dibeli = df[["nama_produk", "kategori", "merek", "bahan", "ukuran", "warna"]].drop_duplicates().to_dict(orient="records")
+
+    return hasil_display, produk_dibeli
+
+
+def get_statistik_top_produk(limit=10):
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    query = """
+        SELECT produk_rekomendasi AS nama_produk, COUNT(*) as total, jenis
+        FROM hasil_rekomendasi
+        GROUP BY produk_rekomendasi, jenis
+        ORDER BY total DESC
+        LIMIT %s
+    """
+    cursor.execute(query, (limit,))
+    result = cursor.fetchall()
+    conn.close()
+    return result

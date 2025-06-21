@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mx-auto mt-5 px-4">
+    <h2 class="text-2xl font-bold mb-6">📋 Cetak Laporan Sistem Rekomendasi</h2>
+
+    <div class="grid grid-cols-1 gap-4 max-w-md">
+        <a href="{{ url_for('laporan_bp.cetak_produk') }}" target="_blank"
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-center">
+            <span>🖨️ Cetak Data Produk</span>
+        </a>
+        <a href="{{ url_for('laporan_bp.cetak_kategori') }}" target="_blank"
+           class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 text-center">
+            <span>🖨️ Cetak Data Kategori</span>
+        </a>
+        <a href="{{ url_for('laporan_bp.cetak_riwayat') }}" target="_blank"
+           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-center">
+            <span>🖨️ Cetak Riwayat Rekomendasi</span>
+        </a>
+        <a href="{{ url_for('laporan_bp.cetak_statistik') }}" target="_blank"
+           class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700 text-center">
+            <span>🖨️ Cetak Statistik Top Rekomendasi</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
