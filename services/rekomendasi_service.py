@@ -56,6 +56,8 @@ def get_rekomendasi(nama_produk):
                 {"nama_produk": cmp["nama_produk"], "skor": round(skor, 2)})
 
     return cross, up
+
+
 def proses_transaksi_excel(file_path):
     import pandas as pd
     from db import get_connection
@@ -73,7 +75,8 @@ def proses_transaksi_excel(file_path):
     pelanggan = df["nama_pelanggan"].iloc[0]
 
     # Simpan transaksi
-    cursor.execute("INSERT INTO transaksi (nama_pelanggan, tanggal) VALUES (%s, NOW())", (pelanggan,))
+    cursor.execute(
+        "INSERT INTO transaksi (nama_pelanggan, tanggal) VALUES (%s, NOW())", (pelanggan,))
     transaksi_id = cursor.lastrowid
     print(f"📌 Transaksi ID baru: {transaksi_id}")
 
@@ -122,7 +125,8 @@ def proses_transaksi_excel(file_path):
 
             if skor > 0:
                 jenis = "up" if p1["kategori"] == p2["kategori"] else "cross"
-                hasil.append((transaksi_id, asal, p2["nama_produk"], jenis, round(skor, 2)))
+                hasil.append(
+                    (transaksi_id, asal, p2["nama_produk"], jenis, round(skor, 2)))
 
                 # Buat dict untuk ditampilkan di HTML
                 hasil_display.append({
@@ -135,7 +139,6 @@ def proses_transaksi_excel(file_path):
                     "skor": round(skor, 2),
                     "jenis": jenis  # ✅ penting agar bisa dipisahkan di HTML
                 })
-
 
     for row in hasil:
         try:
@@ -152,7 +155,8 @@ def proses_transaksi_excel(file_path):
 
     print(f"✅ Proses selesai. Jumlah rekomendasi: {len(hasil)}")
     print("🔍 Rekomendasi:", hasil_display)
-    produk_dibeli = df[["nama_produk", "kategori", "merek", "bahan", "ukuran", "warna"]].drop_duplicates().to_dict(orient="records")
+    produk_dibeli = df[["nama_produk", "kategori", "merek", "bahan",
+                        "ukuran", "warna"]].drop_duplicates().to_dict(orient="records")
 
     return hasil_display, produk_dibeli
 
