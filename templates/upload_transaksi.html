@@ -2,8 +2,17 @@
 
 {% block content %}
 <div class="max-w-7xl mx-auto px-4 py-8">
-  <!-- Header -->
-  <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4">
+  <!-- Header Cetak -->
+  <div id="print-header" class="hidden print:block mb-6 border-b pb-4">
+    <h2 class="text-xl font-bold text-center">Laporan Rekomendasi Produk</h2>
+    <p class="text-sm text-center">
+      Jl. Percetakan Negara No.32, RT.1/RW.7, Cemp. Putih Bar., Jakarta, Kota Jakarta Pusat, Daerah Khusus Ibukota
+      Jakarta 10520
+    </p>
+  </div>
+
+  <!-- Header Normal -->
+  <div class="flex flex-col md:flex-row justify-between md:items-center mb-6 gap-4 print:hidden">
     <h3 class="text-2xl font-semibold text-gray-800 flex items-center">
       <i class="fas fa-upload text-blue-600 mr-2"></i> Upload Transaksi
     </h3>
@@ -13,41 +22,36 @@
   </div>
 
   <!-- Upload Form -->
-  <div class="bg-white rounded shadow p-6 mb-8">
+  <div class="bg-white rounded shadow p-6 mb-8 print:hidden">
     <form method="POST" enctype="multipart/form-data" class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">Pilih File Excel</label>
-        <input type="file" name="file" accept=".xlsx" required class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <input type="file" name="file" accept=".xlsx" required
+          class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
       <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded shadow">
         <i class="fas fa-paper-plane mr-1"></i> Upload & Proses
       </button>
 
       {% with messages = get_flashed_messages() %}
-        {% if messages %}
-          <div class="bg-green-100 text-green-800 px-4 py-2 rounded border border-green-300 mt-4">
-            <i class="fas fa-check-circle mr-1"></i> {{ messages[0] }}
-          </div>
-        {% endif %}
+      {% if messages %}
+      <div class="bg-green-100 text-green-800 px-4 py-2 rounded border border-green-300 mt-4">
+        <i class="fas fa-check-circle mr-1"></i> {{ messages[0] }}
+      </div>
+      {% endif %}
       {% endwith %}
     </form>
   </div>
 
   {% if rekomendasi %}
-  <style>
-    @media print {
-      .print\:hidden {
-        display: none !important;
-      }
-    }
-  </style>
-
-  <!-- Action Buttons -->
+  <!-- Tombol Aksi -->
   <div class="flex flex-col sm:flex-row justify-end gap-3 mb-6 print:hidden">
-    <button onclick="window.print()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow text-sm">
+    <button onclick="window.print()"
+      class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow text-sm">
       🖨️ Cetak
     </button>
-    <a id="waShareBtn" target="_blank" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow text-sm">
+    <a id="waShareBtn" target="_blank"
+      class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow text-sm">
       📤 Share via WhatsApp
     </a>
   </div>
@@ -83,7 +87,7 @@
     </table>
   </div>
 
-  <!-- Rekomendasi Up-Selling -->
+  <!-- Up-Selling -->
   <h4 class="text-lg font-semibold mb-3">📈 Rekomendasi Produk - Up-Selling</h4>
   <div class="overflow-x-auto mb-8">
     <table class="min-w-full bg-white border text-sm text-left">
@@ -116,7 +120,7 @@
     </table>
   </div>
 
-  <!-- Rekomendasi Cross-Selling -->
+  <!-- Cross-Selling -->
   <h4 class="text-lg font-semibold mb-3">🔀 Rekomendasi Produk - Cross-Selling</h4>
   <div class="overflow-x-auto mb-8">
     <table class="min-w-full bg-white border text-sm text-left">
@@ -149,21 +153,78 @@
     </table>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const waBtn = document.getElementById("waShareBtn");
-      const rows = document.querySelectorAll("table tbody tr");
-      let text = "*📦 Hasil Rekomendasi Produk BJ Home:*\n\n";
-      rows.forEach((row, i) => {
-        const cols = row.querySelectorAll("td");
-        const nama = cols[1]?.innerText;
-        const kategori = cols[2]?.innerText;
-        const skor = cols[7]?.innerText || '-';
-        text += `${i + 1}. ${nama} (${kategori}) - Skor: ${skor}\n`;
-      });
-      waBtn.href = "https://wa.me/?text=" + encodeURIComponent(text);
-    });
-  </script>
+  <!-- Footer Cetak -->
+  <div id="print-footer" class="hidden print:block">
+    <div style="position: absolute; bottom: 2cm; right: 2cm; text-align: right;">
+      <p id="tanggal-cetak" class="text-sm mb-10"></p>
+      <p class="text-sm">Manager Operasional</p>
+      <p class="text-sm font-semibold">BJ Home – Percetakan Negara</p>
+    </div>
+  </div>
+
+
+
+
   {% endif %}
 </div>
+
+<!-- CSS Print -->
+<style>
+  @media print {
+    .print\:hidden {
+      display: none !important;
+    }
+
+    #print-header,
+    #print-footer {
+      display: block !important;
+
+    }
+
+    body {
+      margin: 1cm;
+      font-size: 12px;
+    }
+
+    table {
+      page-break-inside: avoid;
+    }
+
+    button,
+    a,
+    .no-print {
+      display: none !important;
+    }
+  }
+</style>
+
+<!-- Script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Tanggal cetak
+    const now = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedDate = now.toLocaleDateString('id-ID', options);
+    document.getElementById("tanggalCetak").textContent = formattedDate;
+
+    // WhatsApp
+    const waBtn = document.getElementById("waShareBtn");
+    const rows = document.querySelectorAll("table tbody tr");
+    let text = "*📦 Hasil Rekomendasi Produk BJ Home:*\n\n";
+    rows.forEach((row, i) => {
+      const cols = row.querySelectorAll("td");
+      const nama = cols[1]?.innerText;
+      const kategori = cols[2]?.innerText;
+      const skor = cols[7]?.innerText || '-';
+      text += `${i + 1}. ${nama} (${kategori}) - Skor: ${skor}\n`;
+    });
+    waBtn.href = "https://wa.me/?text=" + encodeURIComponent(text);
+  });
+  document.addEventListener('DOMContentLoaded', function () {
+    const now = new Date();
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    const tanggal = now.toLocaleDateString('id-ID', options); // e.g. "30 Juli 2025"
+    document.getElementById("tanggal-cetak").textContent = "Jakarta, " + tanggal;
+  });
+</script>
 {% endblock %}
