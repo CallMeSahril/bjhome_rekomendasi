@@ -1,11 +1,16 @@
 from flask import Blueprint, render_template
-import pandas as pd
 from db import get_connection
+
 home_bp = Blueprint("home_bp", __name__)
 
 
 @home_bp.route("/")
-def home():
+def login():
+    return render_template("login.html")
+
+
+@home_bp.route("/dashboard")
+def dashboard():
     conn = get_connection()
     cur = conn.cursor()
 
@@ -26,7 +31,7 @@ def home():
 
     cur.execute("SELECT COUNT(*) FROM hasil_rekomendasi WHERE jenis = 'cross'")
     total_cross = cur.fetchone()[0]
-    # Top 5 Produk Up-Selling
+
     cur.execute("""
         SELECT produk_rekomendasi, COUNT(*) AS jumlah
         FROM hasil_rekomendasi
@@ -37,7 +42,6 @@ def home():
     """)
     top_upselling = cur.fetchall()
 
-    # Top 5 Produk Cross-Selling
     cur.execute("""
         SELECT produk_rekomendasi, COUNT(*) AS jumlah
         FROM hasil_rekomendasi
@@ -59,4 +63,3 @@ def home():
                            total_cross=total_cross,
                            top_upselling=top_upselling,
                            top_crosselling=top_crosselling)
-
